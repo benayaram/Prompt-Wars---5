@@ -1,21 +1,11 @@
 <div align="center">
 
-# 🪔 UtsavIQ · उत्सवIQ
+# 🪔 UtsavIQ
 
 ### Plan the celebration, not the spreadsheet.
 
 One connected plan for budget, timeline and vendors, built for Indian families.<br/>
 Change the guest count and watch catering, budget and warnings move together.
-
-[![CI](https://github.com/akshayparihardev/Promptwars-Challenge-5/actions/workflows/ci.yml/badge.svg)](https://github.com/akshayparihardev/Promptwars-Challenge-5/actions)
-![Tests](https://img.shields.io/badge/tests-405%20unit%20%2B%2014%20e2e-2f6b45)
-![a11y](https://img.shields.io/badge/axe-0%20violations%20(light%20%26%20dark)-2f6b45)
-![Coverage](https://img.shields.io/badge/coverage-100%25%20lines-2f6b45)
-![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)
-![Gemini](https://img.shields.io/badge/Gemini-model%20chain-5e2750)
-![License](https://img.shields.io/badge/license-MIT-lightgrey)
-
-**[🌐 Live app](https://promptwars-challenge-5.vercel.app/)** · Built for PromptWars Virtual, Challenge 5: Celebration & Event Planner
 
 </div>
 
@@ -29,11 +19,6 @@ Change the guest count and watch catering, budget and warnings move together.
 <td align="center"><b>0 axe violations</b><br/><sub>light and dark, desktop and mobile</sub></td>
 </tr>
 </table>
-
-<p align="center">
-  <img src="docs/screenshots/assistant-light.jpg" alt="UtsavIQ planning assistant: what needs attention, an AI chat answer in Hinglish, and the budget at a glance" width="49%" />
-  <img src="docs/screenshots/timeline-dark.jpg" alt="Timeline in dark mode: a 40-day venue delay pushes dependent tasks, each flagged in words" width="49%" />
-</p>
 
 **Jump to:** [The problem](#-the-problem) · [The idea](#-the-idea-one-plan-everything-connected) · [Assistant](#-meet-your-planning-assistant) · [Try it](#%EF%B8%8F-try-it-in-two-minutes) · [Features](#-what-it-does) · [Architecture](#%EF%B8%8F-architecture) · [GenAI](#-genai-usage) · [Assumptions](#-assumptions) · [Quality](#-quality) · [Evaluation criteria](#-evaluation-criteria) · [Run locally](#-run-it-locally)
 
@@ -273,8 +258,8 @@ AI responses are cached server-side for 10 minutes, an AI request is **cancelled
 ## 🚀 Run it locally
 
 ```bash
-git clone https://github.com/akshayparihardev/Promptwars-Challenge-5.git
-cd Promptwars-Challenge-5
+git clone https://github.com/benayaram/Prompt-Wars---5.git
+cd Prompt-Wars---5
 npm install
 cp .env.example .env     # add your GEMINI_API_KEY
 npm run dev              # UI and /api together (same handlers as production)
@@ -351,6 +336,3 @@ More detail on the security model is in [SECURITY.md](SECURITY.md).
 - Optional accounts so a family can plan together across devices.
 - Hindi and regional-language interface.
 
-## 📄 License
-
-MIT © Akshay Parihar
