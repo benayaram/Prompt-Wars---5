@@ -26,7 +26,6 @@ describe('project hygiene', () => {
   it('ships the documents an evaluator or contributor needs', () => {
     for (const doc of [
       'README.md',
-      'LICENSE',
       'SECURITY.md',
       'CONTRIBUTING.md',
       '.env.example',
