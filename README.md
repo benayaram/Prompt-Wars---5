@@ -7,6 +7,8 @@
 One connected plan for budget, timeline and vendors, built for Indian families.<br/>
 Change the guest count and watch catering, budget and warnings move together.
 
+**[🌐 Live Demo](https://prompt-wars-5.vercel.app/)** · **[GitHub Repository](https://github.com/benayaram/Prompt-Wars---5)**
+
 </div>
 
 ---
@@ -61,7 +63,7 @@ Then just **ask**: _"Kitna kharcha bacha hai?"_, _"What should we book first?"_,
 
 ## ⏱️ Try it in two minutes
 
-Open the **[live app](https://promptwars-challenge-5.vercel.app/)** and follow Priya's shaadi:
+Open the **[live app](https://prompt-wars-5.vercel.app/)** and follow Priya's shaadi:
 
 1. ✍️ **Describe it** in your own words: _"Shaadi in Pune, 200 guests, 8 lakh budget, mid-Feb, simple ceremony but premium food"_ and press **Fill form from description**. Gemini fills the form; you can still edit everything.
 2. 💰 **Budget.** Catering is boosted because "premium food" matters most. Drag **Photography** up and a toast shows exactly what shrank. **Lock** catering to protect it.
