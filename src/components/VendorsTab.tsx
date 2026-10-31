@@ -18,7 +18,8 @@ export default function VendorsTab({
           Vendor Procurement & Contract Intelligence
         </h2>
         <p className="mt-1 text-sm text-ink-soft">
-          Track outreach status, extract fine print from quotes with GenAI, and compare bids side-by-side.
+          Track outreach status, extract fine print from quotes with GenAI, and compare bids
+          side-by-side.
         </p>
       </div>
       <VendorChecklist plan={plan} dispatch={dispatch} />

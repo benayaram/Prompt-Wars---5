@@ -39,7 +39,10 @@ export function QuoteResult({
   }
 
   return (
-    <div className="mt-5 space-y-4 rounded-2xl border border-line bg-paper/30 p-5 shadow-xs" data-testid="quote-result">
+    <div
+      className="mt-5 space-y-4 rounded-2xl border border-line bg-paper/30 p-5 shadow-xs"
+      data-testid="quote-result"
+    >
       <div className="flex items-center justify-between border-b border-line pb-3">
         <h3 className="font-display text-base font-bold text-ink">
           What we found (AI extraction, please verify)
@@ -51,13 +54,22 @@ export function QuoteResult({
 
       {cost !== null && (
         <div className="rounded-xl border border-line bg-card p-3.5 text-sm shadow-xs">
-          Effective cost <strong className="font-bold text-accent">{formatINR(cost)}</strong> against a{' '}
-          <span className="font-semibold">{categoryLabel(plan.occasion, quote.category)}</span> budget of{' '}
-          <strong className="font-bold text-ink">{formatINR(plan.allocation[quote.category])}</strong>.
+          Effective cost <strong className="font-bold text-accent">{formatINR(cost)}</strong>{' '}
+          against a{' '}
+          <span className="font-semibold">{categoryLabel(plan.occasion, quote.category)}</span>{' '}
+          budget of{' '}
+          <strong className="font-bold text-ink">
+            {formatINR(plan.allocation[quote.category])}
+          </strong>
+          .
         </div>
       )}
 
-      <div role="status" aria-live="polite" className="rounded-xl border border-line bg-card p-4 shadow-xs">
+      <div
+        role="status"
+        aria-live="polite"
+        className="rounded-xl border border-line bg-card p-4 shadow-xs"
+      >
         <h4 className="font-bold text-ink">Things to check</h4>
         {flags.length === 0 ? (
           <p className="mt-1 flex items-center gap-2 text-sm font-semibold text-ok">
@@ -83,7 +95,11 @@ export function QuoteResult({
       )}
 
       <div className="flex flex-wrap gap-2.5 pt-2">
-        <button type="button" className="btn-secondary !min-h-10 text-xs font-semibold sm:text-sm" onClick={() => void copyDraft()}>
+        <button
+          type="button"
+          className="btn-secondary !min-h-10 text-xs font-semibold sm:text-sm"
+          onClick={() => void copyDraft()}
+        >
           <Icon name="mail" className="h-4 w-4 text-accent" />
           Copy inquiry message
         </button>
@@ -108,7 +124,8 @@ export function QuoteResult({
 
       {full && (
         <p className="text-xs font-medium text-warn">
-          You already have {MAX_QUOTES_PER_CATEGORY} quotations for this category. Remove one below to add another.
+          You already have {MAX_QUOTES_PER_CATEGORY} quotations for this category. Remove one below
+          to add another.
         </p>
       )}
       {cost === null && (

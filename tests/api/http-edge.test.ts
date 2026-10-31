@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   clientIp,
+  hasPrototypePollution,
   rateLimited,
   RATE_LIMIT_MAX,
   RATE_LIMIT_WINDOW_MS,
@@ -20,6 +21,20 @@ describe('clientIp', () => {
     expect(clientIp({ headers: { 'x-forwarded-for': '3.3.3.3, 4.4.4.4' } })).toBe('3.3.3.3');
     expect(clientIp({ headers: {}, socket: { remoteAddress: '5.5.5.5' } })).toBe('5.5.5.5');
     expect(clientIp({ headers: {} })).toBe('unknown');
+  });
+
+  it('rejects malformed IP addresses and falls back safely', () => {
+    expect(
+      clientIp({
+        headers: { 'x-vercel-forwarded-for': 'invalid-ip', 'x-forwarded-for': 'malformed' },
+        socket: { remoteAddress: '127.0.0.1' },
+      }),
+    ).toBe('127.0.0.1');
+    expect(
+      clientIp({
+        headers: { 'x-forwarded-for': '../../etc/passwd, not-an-ip' },
+      }),
+    ).toBe('unknown');
   });
 });
 
@@ -43,6 +58,15 @@ describe('sameOrigin', () => {
     expect(sameOrigin({ headers: { origin: 'https://a.test', host: '' } })).toBe(false);
     expect(sameOrigin({ headers: { origin: 'https://a.test', host: 'a.test' } })).toBe(true);
     expect(sameOrigin({ headers: { origin: ['https://a.test'], host: ['a.test'] } })).toBe(true);
+    expect(sameOrigin({ headers: { origin: 'not-a-valid-url', host: 'a.test' } })).toBe(false);
+  });
+});
+
+describe('prototype pollution check', () => {
+  it('returns false for clean objects and arrays', () => {
+    expect(hasPrototypePollution(null)).toBe(false);
+    expect(hasPrototypePollution(123)).toBe(false);
+    expect(hasPrototypePollution({ clean: 'data', list: [1, 2, 3] })).toBe(false);
   });
 });
 
@@ -58,5 +82,34 @@ describe('body size guard', () => {
     const { res, out } = mockRes();
     await parseIntake(mockReq({ body: undefined }), res);
     expect(out.status).toBe(400);
+  });
+
+  it('rejects prototype-pollution payloads with 400', async () => {
+    const { res, out } = mockRes();
+    await parseIntake(
+      mockReq({
+        body: JSON.parse('{"__proto__": {"admin": true}, "text": "wedding in goa"}'),
+      }),
+      res,
+    );
+    expect(out.status).toBe(400);
+
+    const { res: res2, out: out2 } = mockRes();
+    await parseIntake(
+      mockReq({
+        body: JSON.parse('{"options": [{"constructor": {}}], "text": "wedding in goa"}'),
+      }),
+      res2,
+    );
+    expect(out2.status).toBe(400);
+  });
+
+  it('sets strict HTTP security headers on all responses', async () => {
+    const { res, out } = mockRes();
+    await parseIntake(mockReq({ body: undefined }), res);
+    expect(out.headers['X-Content-Type-Options']).toBe('nosniff');
+    expect(out.headers['X-Frame-Options']).toBe('DENY');
+    expect(out.headers['Cross-Origin-Resource-Policy']).toBe('same-origin');
+    expect(out.headers['Referrer-Policy']).toBe('strict-origin-when-cross-origin');
   });
 });

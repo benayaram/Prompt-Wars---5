@@ -1,6 +1,12 @@
 import type { Task } from '../schemas';
 import { diffDays } from './dates';
 
+/** Maximum decompressed byte budget for untrusted binary payloads (64 KB). */
+export const MAX_DECOMPRESSED_BYTES = 65_536;
+
+/** Maximum encoded compressed payload length before decoding (8 KB). */
+export const MAX_COMPRESSED_LENGTH = 8_192;
+
 export interface Compression {
   /** True when the event is closer than the plan's longest lead time. */
   compressed: boolean;

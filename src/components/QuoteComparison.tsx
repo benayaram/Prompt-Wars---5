@@ -47,7 +47,11 @@ function CategoryTable({
               <span className="sr-only">Metric</span>
             </th>
             {cols.map((c, i) => (
-              <th key={c.s.id} scope="col" className="border-b border-line px-4 py-3 font-bold text-left text-ink">
+              <th
+                key={c.s.id}
+                scope="col"
+                className="border-b border-line px-4 py-3 font-bold text-left text-ink"
+              >
                 <div className="flex items-center gap-2">
                   <span>{c.s.quote.vendorName ?? `Quotation ${i + 1}`}</span>
                   {c.s.accepted && (
@@ -62,13 +66,25 @@ function CategoryTable({
         </thead>
         <tbody className="divide-y divide-line/70">
           <tr className="hover:bg-paper/30">
-            <th scope="row" className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft">
+            <th
+              scope="row"
+              className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft"
+            >
               Effective cost ({plan.guests} guests)
             </th>
-            {cell((c) => (c.cost === null ? 'Not stated' : <strong className="font-bold text-ink">{formatINR(c.cost)}</strong>))}
+            {cell((c) =>
+              c.cost === null ? (
+                'Not stated'
+              ) : (
+                <strong className="font-bold text-ink">{formatINR(c.cost)}</strong>
+              ),
+            )}
           </tr>
           <tr className="hover:bg-paper/30">
-            <th scope="row" className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft">
+            <th
+              scope="row"
+              className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft"
+            >
               Against budget
             </th>
             {cell((c) =>
@@ -88,33 +104,56 @@ function CategoryTable({
             )}
           </tr>
           <tr className="hover:bg-paper/30">
-            <th scope="row" className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft">
+            <th
+              scope="row"
+              className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft"
+            >
               Per plate
             </th>
-            {cell((c) => (c.s.quote.pricePerPlate === null ? '-' : formatINR(c.s.quote.pricePerPlate)))}
+            {cell((c) =>
+              c.s.quote.pricePerPlate === null ? '-' : formatINR(c.s.quote.pricePerPlate),
+            )}
           </tr>
           <tr className="hover:bg-paper/30">
-            <th scope="row" className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft">
+            <th
+              scope="row"
+              className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft"
+            >
               Guest minimum
             </th>
             {cell((c) => c.s.quote.guestMinimum ?? '-')}
           </tr>
           <tr className="hover:bg-paper/30">
-            <th scope="row" className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft">
+            <th
+              scope="row"
+              className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft"
+            >
               Advance %
             </th>
-            {cell((c) => (c.s.quote.advancePercent === null ? '-' : `${c.s.quote.advancePercent}%`))}
-          </tr>
-          <tr className="hover:bg-paper/30">
-            <th scope="row" className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft">
-              Tax status
-            </th>
             {cell((c) =>
-              c.s.quote.taxIncluded === null ? 'Not stated' : c.s.quote.taxIncluded ? 'Included' : 'Extra',
+              c.s.quote.advancePercent === null ? '-' : `${c.s.quote.advancePercent}%`,
             )}
           </tr>
           <tr className="hover:bg-paper/30">
-            <th scope="row" className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft">
+            <th
+              scope="row"
+              className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft"
+            >
+              Tax status
+            </th>
+            {cell((c) =>
+              c.s.quote.taxIncluded === null
+                ? 'Not stated'
+                : c.s.quote.taxIncluded
+                  ? 'Included'
+                  : 'Extra',
+            )}
+          </tr>
+          <tr className="hover:bg-paper/30">
+            <th
+              scope="row"
+              className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft"
+            >
               Things to check
             </th>
             {cell((c) =>
@@ -135,7 +174,10 @@ function CategoryTable({
             )}
           </tr>
           <tr className="bg-paper/40">
-            <th scope="row" className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft">
+            <th
+              scope="row"
+              className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-ink-soft"
+            >
               Actions
             </th>
             {cell((c) => (
@@ -176,7 +218,8 @@ export function QuoteComparison({ plan, dispatch }: { plan: Plan; dispatch: (a: 
     return (
       <div className="card shadow-card p-6 text-center">
         <p className="text-sm font-medium text-ink-soft">
-          No quotations saved yet. Analyze a quotation above and save it to compare up to three vendors per category.
+          No quotations saved yet. Analyze a quotation above and save it to compare up to three
+          vendors per category.
         </p>
       </div>
     );

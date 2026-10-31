@@ -18,6 +18,8 @@ export interface PlanFacts {
   insights: { severity: InsightSeverity; title: string; detail: string }[];
 }
 
+export const MAX_FACTS_INSIGHTS = 10;
+
 export function planFacts(plan: Plan, today: string): PlanFacts {
   return {
     occasion: plan.occasion,
@@ -32,7 +34,7 @@ export function planFacts(plan: Plan, today: string): PlanFacts {
       shortfall: n.shortfall,
     })),
     insights: planInsights(plan, today)
-      .slice(0, 10)
+      .slice(0, MAX_FACTS_INSIGHTS)
       .map(({ severity, title, detail }) => ({ severity, title, detail })),
   };
 }

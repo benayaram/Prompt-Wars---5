@@ -1,7 +1,16 @@
 import type { ZodType } from 'zod';
 import type { AiStreamEvent } from '../../src/schemas/index.js';
 import { CACHE_TTL_MS, cacheGet, cacheKey, cacheSet } from './cache.js';
+import {
+  SECURITY_HEADERS,
+  clientIp,
+  hasPrototypePollution,
+  sameOrigin,
+  MAX_REQUEST_BODY_BYTES,
+} from './security.js';
 import { incrementWindow, storeGet, storeKey, storeSet } from './store.js';
+
+export { SECURITY_HEADERS, clientIp, hasPrototypePollution, sameOrigin, MAX_REQUEST_BODY_BYTES };
 
 /** Structural subsets of the Vercel request/response so handlers are trivial to unit test. */
 export interface ApiRequest {
@@ -50,16 +59,6 @@ export class ApiFailure extends Error {
 function header(req: ApiRequest, name: string): string {
   const value = req.headers[name];
   return (Array.isArray(value) ? value[0] : value) ?? '';
-}
-
-/** Best-effort client address, used only as a rate-limit key. */
-export function clientIp(req: ApiRequest): string {
-  // Vercel sets these itself; prefer them over a header a caller could add.
-  const platform = header(req, 'x-vercel-forwarded-for') || header(req, 'x-real-ip');
-  const forwarded = header(req, 'x-forwarded-for').split(',')[0]?.trim();
-  if (platform) return platform;
-  if (forwarded) return forwarded;
-  return req.socket?.remoteAddress ?? 'unknown';
 }
 
 const hits = new Map<string, number[]>();
@@ -120,22 +119,6 @@ function bodyBytes(body: unknown): number {
   }
 }
 
-/**
- * Only our own pages may spend the AI quota. Browsers always send Origin on a POST; it must match
- * the host serving the API. Cross-site requests and clients that hide where they come from are
- * refused. (A determined server-side caller can still forge headers, which the rate limit covers.)
- */
-export function sameOrigin(req: ApiRequest): boolean {
-  const origin = header(req, 'origin');
-  const host = header(req, 'x-forwarded-host') || header(req, 'host');
-  if (!origin || !host) return false;
-  try {
-    return new URL(origin).host === host.split(',')[0]?.trim();
-  } catch {
-    return false;
-  }
-}
-
 export interface HandlerConfig<I> {
   /** Route name, used as the cache namespace. */
   name: string;
@@ -182,6 +165,9 @@ async function streamRun<I>(
 export function createHandler<I>(config: HandlerConfig<I>) {
   return async function handler(req: ApiRequest, res: ApiResponse): Promise<void> {
     res.setHeader('Cache-Control', 'no-store');
+    for (const [headerName, headerVal] of Object.entries(SECURITY_HEADERS)) {
+      res.setHeader(headerName, headerVal);
+    }
     if (req.method !== 'POST') {
       res.setHeader('Allow', 'POST');
       fail(res, 405, 'METHOD_NOT_ALLOWED');
@@ -216,6 +202,10 @@ export function createHandler<I>(config: HandlerConfig<I>) {
         fail(res, 400, 'INVALID_INPUT');
         return;
       }
+    }
+    if (hasPrototypePollution(body)) {
+      fail(res, 400, 'INVALID_INPUT');
+      return;
     }
     const parsed = config.input.safeParse(body);
     if (!parsed.success) {

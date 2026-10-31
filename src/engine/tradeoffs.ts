@@ -32,7 +32,7 @@ function guestOption(plan: Plan, overBy: number): TradeoffOption | null {
   if (plan.perPlate <= 0) return null;
   const remove = Math.ceil(overBy / plan.perPlate);
   const newGuests = plan.guests - remove;
-  if (newGuests < 1 || remove * 4 >= plan.guests) return null;
+  if (newGuests < 1 || remove >= plan.guests * MAX_GUEST_CUT_SHARE) return null;
   if (budgetStatus({ ...plan, guests: newGuests }).overBy > 0) return null;
   return {
     id: 'reduce_guests',

@@ -141,7 +141,10 @@ export const CategoryRow = memo(function CategoryRow({
           />
         </div>
         {invalid && (
-          <p id={errorId} className="mt-1 flex items-center gap-1.5 text-xs font-semibold text-warn">
+          <p
+            id={errorId}
+            className="mt-1 flex items-center gap-1.5 text-xs font-semibold text-warn"
+          >
             <Icon name="alert" className="h-3.5 w-3.5 shrink-0" />
             Couldn&apos;t read that amount.
           </p>

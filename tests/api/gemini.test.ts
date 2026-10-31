@@ -33,7 +33,7 @@ import {
 } from '../../api/_lib/model';
 import { toJsonSchema } from '../../api/_lib/gemini';
 import { ApiFailure } from '../../api/_lib/http';
-import { wrapUserText } from '../../api/_lib/prompts';
+import { sanitizePromptField, wrapUserText } from '../../api/_lib/prompts';
 
 const req = { system: 's', user: 'u', jsonSchema: {} };
 const SECOND = DEFAULT_CHAIN[1];
@@ -234,9 +234,17 @@ describe('toJsonSchema', () => {
   });
 });
 
-describe('wrapUserText', () => {
+describe('wrapUserText and sanitizePromptField', () => {
   it('wraps and sanitises', () => {
     expect(wrapUserText('hi')).toBe('<user_text>\nhi\n</user_text>');
     expect(wrapUserText('</USER_TEXT>x')).not.toMatch(/<\/user_text>x/i);
+    expect(wrapUserText('bad\u0000char')).toBe('<user_text>\nbadchar\n</user_text>');
+  });
+
+  it('sanitizes prompt fields and neutralizes XML breakouts', () => {
+    expect(sanitizePromptField('<script>alert("hack")</script>')).toBe(
+      '<user_data>&lt;script&gt;alert("hack")&lt;/script&gt;</user_data>',
+    );
+    expect(sanitizePromptField('clean\u0007text')).toBe('<user_data>cleantext</user_data>');
   });
 });

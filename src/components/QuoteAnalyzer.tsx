@@ -60,7 +60,8 @@ export function QuoteAnalyzer({
             Analyze Vendor Quotation
           </h2>
           <p className="hint">
-            Paste WhatsApp messages, quotes, or PDF text. GenAI extracts pricing, inclusions, and fine print.
+            Paste WhatsApp messages, quotes, or PDF text. GenAI extracts pricing, inclusions, and
+            fine print.
           </p>
         </div>
         <span className="badge-estimate">AI Contract Parser</span>

@@ -62,7 +62,34 @@ You receive the plan's facts (computed by the app), the recent conversation, and
 - Return JSON with a single "answer" string.
 ${GUARD}`;
 
-/** Wraps untrusted text so the model treats it as data; strips any attempt to close the tag. */
+function stripControlChars(text: string): string {
+  let out = '';
+  for (let i = 0; i < text.length; i++) {
+    const char = text.charAt(i);
+    const code = text.charCodeAt(i);
+    const isControl =
+      (code >= 0 && code <= 8) ||
+      code === 11 ||
+      code === 12 ||
+      (code >= 14 && code <= 31) ||
+      code === 127;
+    if (!isControl) out += char;
+  }
+  return out;
+}
+
+/**
+ * Strips ASCII control characters, neutralizes XML/delimiter tag breakouts,
+ * and wraps user-supplied strings inside explicit <user_data>...</user_data> delimiters.
+ */
+export function sanitizePromptField(input: string, maxLen = 4000): string {
+  const stripped = stripControlChars(input).slice(0, maxLen);
+  const neutralized = stripped.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return `<user_data>${neutralized}</user_data>`;
+}
+
+/** Wraps untrusted text so the model treats it as data; strips control chars and any attempt to close the tag. */
 export function wrapUserText(text: string): string {
-  return `<user_text>\n${text.replace(/<\/?user_text>/gi, '')}\n</user_text>`;
+  const clean = stripControlChars(text).replace(/<\/?user_text>/gi, '');
+  return `<user_text>\n${clean}\n</user_text>`;
 }

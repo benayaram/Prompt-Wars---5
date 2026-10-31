@@ -48,12 +48,19 @@ export function AskPlanner({ plan, today }: { plan: Plan; today: string }) {
   return (
     <section className="mt-6 border-t border-line/80 pt-5" aria-labelledby="ask-h">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h3 id="ask-h" className="flex items-center gap-2 font-display text-base font-bold text-ink">
+        <h3
+          id="ask-h"
+          className="flex items-center gap-2 font-display text-base font-bold text-ink"
+        >
           <Icon name="mail" className="h-4 w-4 text-accent" />
           Ask the planner
         </h3>
         {turns.length > 0 && (
-          <button type="button" className="btn-quiet !min-h-8 text-xs font-semibold" onClick={() => setTurns([])}>
+          <button
+            type="button"
+            className="btn-quiet !min-h-8 text-xs font-semibold"
+            onClick={() => setTurns([])}
+          >
             New conversation
           </button>
         )}
@@ -66,10 +73,7 @@ export function AskPlanner({ plan, today }: { plan: Plan; today: string }) {
         {turns.map((turn, index) => {
           const isUser = turn.role === 'user';
           return (
-            <div
-              key={index}
-              className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}
-            >
+            <div key={index} className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}>
               <div
                 className={`max-w-[85%] rounded-2xl p-4 text-sm leading-relaxed shadow-sm ${
                   isUser

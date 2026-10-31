@@ -30,14 +30,20 @@ export function QuoteFacts({ quote, guests }: { quote: Quote; guests: number }) 
         <tbody className="divide-y divide-line/70">
           {rows.map(([k, v]) => (
             <tr key={k} className="transition-colors hover:bg-card/60">
-              <th scope="row" className="w-2/5 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink-soft">
+              <th
+                scope="row"
+                className="w-2/5 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink-soft"
+              >
                 {k}
               </th>
               <td className="px-4 py-2 text-sm font-medium text-ink">{v}</td>
             </tr>
           ))}
           <tr className="bg-accent-soft/40">
-            <th scope="row" className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-accent">
+            <th
+              scope="row"
+              className="px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-accent"
+            >
               Effective cost for {guests} guests
             </th>
             <td className="px-4 py-2.5 font-display text-base font-bold text-accent">

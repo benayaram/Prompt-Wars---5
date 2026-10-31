@@ -3,6 +3,8 @@ import {
   addDays,
   buildSchedule,
   compressTasks,
+  MAX_COMPRESSED_LENGTH,
+  MAX_DECOMPRESSED_BYTES,
   RUN_SHEETS,
   scheduleCompression,
   TASK_TEMPLATES,
@@ -76,5 +78,10 @@ describe('RUN_SHEETS', () => {
       expect((sheet[i - 1]?.time ?? '') < (sheet[i]?.time ?? '')).toBe(true);
     }
     expect(sheet.every((item) => /^\d{2}:\d{2}$/.test(item.time))).toBe(true);
+  });
+
+  it('exposes decompression security limits', () => {
+    expect(MAX_DECOMPRESSED_BYTES).toBe(65_536);
+    expect(MAX_COMPRESSED_LENGTH).toBe(8_192);
   });
 });

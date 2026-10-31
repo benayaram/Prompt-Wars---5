@@ -3,6 +3,8 @@ import { budgetStatus } from '../../src/engine';
 import {
   decodePlan,
   encodePlan,
+  MAX_COMPRESSED_LENGTH,
+  MAX_DECOMPRESSED_BYTES,
   MAX_SHARE_CHARS,
   planFromHash,
   shareHash,
@@ -38,6 +40,8 @@ describe('share links', () => {
       reason: 'invalid',
     });
     expect(decodePlan('%%%')).toEqual({ ok: false, reason: 'malformed' });
+    expect(MAX_COMPRESSED_LENGTH).toBe(8_192);
+    expect(MAX_DECOMPRESSED_BYTES).toBe(65_536);
   });
 
   it('rejects script payloads and plans whose maths do not add up or loop', () => {

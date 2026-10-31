@@ -1,5 +1,4 @@
 import { useState, type FormEvent } from 'react';
-import { BRANDING } from '../config/branding';
 import {
   createPlan,
   formatINR,
@@ -22,6 +21,7 @@ import {
 import { DescribeEvent } from './DescribeEvent';
 import { ErrorSummary } from './ErrorSummary';
 import { PlanExtras } from './PlanExtras';
+import { PlanSetupHero } from './PlanSetupHero';
 import { Field } from './ui';
 
 interface Errors {
@@ -123,23 +123,15 @@ export function PlanSetup({
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start">
-      {!existing && (
-        <div className="lg:col-span-2">
-          <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent-soft px-3 py-1 text-xs font-semibold text-accent">
-            <span>✨</span> Next-Gen Event Operations
-          </div>
-          <h2 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-            Plan the celebration, not the spreadsheet.
-          </h2>
-          <p className="mt-2 max-w-2xl text-sm text-ink-soft sm:text-base">
-            Tell us about your event. {BRANDING.PRODUCT_NAME} keeps your budget, timeline, and vendors in one
-            connected engine, so a change in one place synchronizes across all dimensions instantly.
-          </p>
-        </div>
-      )}
+      {!existing && <PlanSetupHero />}
       <DescribeEvent onParsed={applyParsed} />
 
-      <form className="card space-y-5 shadow-card" onSubmit={submit} noValidate aria-labelledby="essentials-h">
+      <form
+        className="card space-y-5 shadow-card"
+        onSubmit={submit}
+        noValidate
+        aria-labelledby="essentials-h"
+      >
         <div className="border-b border-line pb-3">
           <h2 id="essentials-h" className="font-display text-lg font-bold text-ink">
             The essentials

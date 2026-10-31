@@ -7,7 +7,7 @@ coverage/
 # secrets
 .env
 .env.*
-!.env.example
+.env.example
 
 # local-only working files (never committed)
 .claude/skills/

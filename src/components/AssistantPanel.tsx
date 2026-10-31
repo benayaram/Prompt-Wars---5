@@ -14,10 +14,28 @@ import { Icon, type IconName } from './Icon';
 import { AnswerMeta } from './ThinkingTrace';
 import { AiError, AiLoading } from './ui';
 
-const SEVERITY: Record<InsightSeverity, { label: string; icon: IconName; tone: string; bg: string }> = {
-  critical: { label: 'Urgent', icon: 'alert', tone: 'text-warn', bg: 'bg-warn-soft border-warn/30' },
-  warning: { label: 'Needs attention', icon: 'clock', tone: 'text-warn', bg: 'bg-warn-soft/60 border-warn/25' },
-  suggestion: { label: 'Suggestion', icon: 'sparkle', tone: 'text-accent', bg: 'bg-accent-soft border-accent/25' },
+const SEVERITY: Record<
+  InsightSeverity,
+  { label: string; icon: IconName; tone: string; bg: string }
+> = {
+  critical: {
+    label: 'Urgent',
+    icon: 'alert',
+    tone: 'text-warn',
+    bg: 'bg-warn-soft border-warn/30',
+  },
+  warning: {
+    label: 'Needs attention',
+    icon: 'clock',
+    tone: 'text-warn',
+    bg: 'bg-warn-soft/60 border-warn/25',
+  },
+  suggestion: {
+    label: 'Suggestion',
+    icon: 'sparkle',
+    tone: 'text-accent',
+    bg: 'bg-accent-soft border-accent/25',
+  },
 };
 
 const TAB_LABEL: Record<InsightTab, string> = {
@@ -39,12 +57,16 @@ function InsightRow({
   return (
     <li className="flex flex-wrap items-start justify-between gap-3 py-3.5 transition-colors hover:bg-paper/40">
       <div className="flex min-w-0 flex-1 items-start gap-3">
-        <div className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border ${s.bg}`}>
+        <div
+          className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border ${s.bg}`}
+        >
           <Icon name={s.icon} className={`h-4 w-4 ${s.tone}`} />
         </div>
         <div className="min-w-0">
           <p className="font-semibold text-ink">
-            <span className={`mr-2 rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${s.bg} ${s.tone}`}>
+            <span
+              className={`mr-2 rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${s.bg} ${s.tone}`}
+            >
               {s.label}
             </span>
             {insight.title}
@@ -100,7 +122,10 @@ export function AssistantPanel({
     <section className="card mb-6 shadow-card" aria-labelledby="assistant-h">
       <div className="flex flex-wrap items-start justify-between gap-3 border-b border-line pb-4">
         <div>
-          <h2 id="assistant-h" className="flex items-center gap-2 font-display text-lg font-bold text-ink">
+          <h2
+            id="assistant-h"
+            className="flex items-center gap-2 font-display text-lg font-bold text-ink"
+          >
             <Icon name="sparkle" className="h-5 w-5 text-accent" />
             Your planning assistant
           </h2>
@@ -153,7 +178,10 @@ export function AssistantPanel({
           <AiError message={ai.state.message} onRetry={() => void askAi()} />
         )}
         {ai.state.status === 'done' && (
-          <div className="rounded-2xl border border-accent/25 bg-accent-soft p-5 shadow-sm" data-testid="ai-review">
+          <div
+            className="rounded-2xl border border-accent/25 bg-accent-soft p-5 shadow-sm"
+            data-testid="ai-review"
+          >
             <p className="text-sm font-medium text-ink leading-relaxed">{ai.state.data.summary}</p>
             <ol className="mt-3.5 space-y-2 border-t border-accent/20 pt-3 text-sm text-ink">
               {ai.state.data.steps.map((step, idx) => (

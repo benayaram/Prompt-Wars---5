@@ -63,7 +63,9 @@ export function TradeoffPanel({
           <h2 id="options-h" className="font-display text-lg font-bold text-ink">
             Ways to close the gap
           </h2>
-          <p className="hint">Engine generated trade-offs. Nothing changes until you apply an option.</p>
+          <p className="hint">
+            Engine generated trade-offs. Nothing changes until you apply an option.
+          </p>
         </div>
         <button
           type="button"
@@ -116,7 +118,9 @@ export function TradeoffPanel({
                 <div className="mt-3 rounded-xl border border-accent/20 bg-accent-soft p-3 text-xs">
                   <p className="font-medium text-ink">{explanation.summary}</p>
                   <p className="mt-1 font-bold text-accent">Best when: {explanation.bestWhen}</p>
-                  <p className="mt-1 text-[11px] text-ink-soft">AI analysis of the mathematical trade-off</p>
+                  <p className="mt-1 text-[11px] text-ink-soft">
+                    AI analysis of the mathematical trade-off
+                  </p>
                 </div>
               )}
               <div className="mt-auto pt-5">

@@ -82,7 +82,12 @@ export function ProgressPanel({
               {readiness.percent}%
             </span>
           </div>
-          <button ref={closeRef} type="button" className="btn-secondary !min-h-9 !px-2.5 !py-1 text-xs" onClick={onToggle}>
+          <button
+            ref={closeRef}
+            type="button"
+            className="btn-secondary !min-h-9 !px-2.5 !py-1 text-xs"
+            onClick={onToggle}
+          >
             <Icon name="x" className="h-4 w-4" />
             Hide
           </button>
@@ -92,8 +97,8 @@ export function ProgressPanel({
           <div className="rounded-2xl border border-line bg-paper/50 p-4">
             <p className="text-sm font-semibold text-ink">
               <strong>{readiness.percent}% ready.</strong> {readiness.tasksDone} of{' '}
-              {readiness.tasksTotal} tasks done, {readiness.quotesVerified} of {readiness.quotesTotal}{' '}
-              vendors confirmed.
+              {readiness.tasksTotal} tasks done, {readiness.quotesVerified} of{' '}
+              {readiness.quotesTotal} vendors confirmed.
             </p>
             <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-line">
               <div
@@ -105,16 +110,26 @@ export function ProgressPanel({
 
           <section aria-labelledby="progress-vendors">
             <div className="flex items-center justify-between gap-2 border-b border-line pb-2">
-              <h3 id="progress-vendors" className="text-xs font-bold uppercase tracking-wider text-ink-soft">
+              <h3
+                id="progress-vendors"
+                className="text-xs font-bold uppercase tracking-wider text-ink-soft"
+              >
                 Vendors and quotations
               </h3>
-              <button type="button" className="btn-quiet !min-h-7 !px-2 text-xs font-semibold" onClick={() => onNavigate('vendors')}>
+              <button
+                type="button"
+                className="btn-quiet !min-h-7 !px-2 text-xs font-semibold"
+                onClick={() => onNavigate('vendors')}
+              >
                 Open
               </button>
             </div>
             <ul className="mt-3 space-y-2.5">
               {vendors.map((item) => (
-                <li key={item.category} className="flex items-start gap-2.5 rounded-xl border border-line/60 bg-paper/40 p-2.5 text-sm">
+                <li
+                  key={item.category}
+                  className="flex items-start gap-2.5 rounded-xl border border-line/60 bg-paper/40 p-2.5 text-sm"
+                >
                   <Tick done={item.status === 'quote_accepted'} />
                   <span className="min-w-0 flex-1">
                     <span className="font-semibold text-ink">{item.label}</span>
@@ -130,22 +145,36 @@ export function ProgressPanel({
 
           <section aria-labelledby="progress-tasks">
             <div className="flex items-center justify-between gap-2 border-b border-line pb-2">
-              <h3 id="progress-tasks" className="text-xs font-bold uppercase tracking-wider text-ink-soft">
+              <h3
+                id="progress-tasks"
+                className="text-xs font-bold uppercase tracking-wider text-ink-soft"
+              >
                 Timeline tasks
               </h3>
-              <button type="button" className="btn-quiet !min-h-7 !px-2 text-xs font-semibold" onClick={() => onNavigate('timeline')}>
+              <button
+                type="button"
+                className="btn-quiet !min-h-7 !px-2 text-xs font-semibold"
+                onClick={() => onNavigate('timeline')}
+              >
                 Open
               </button>
             </div>
             <ul className="mt-3 space-y-2.5">
               {tasks.map((task) => (
-                <li key={task.id} className="flex items-start gap-2.5 rounded-xl border border-line/60 bg-paper/40 p-2.5 text-sm">
+                <li
+                  key={task.id}
+                  className="flex items-start gap-2.5 rounded-xl border border-line/60 bg-paper/40 p-2.5 text-sm"
+                >
                   <Tick done={task.status === 'done'} warn={task.status === 'delayed'} />
                   <span className="min-w-0 flex-1">
-                    <span className={`font-semibold ${task.status === 'done' ? 'text-ink-soft line-through' : 'text-ink'}`}>
+                    <span
+                      className={`font-semibold ${task.status === 'done' ? 'text-ink-soft line-through' : 'text-ink'}`}
+                    >
                       {task.title}
                     </span>
-                    <span className="block text-xs font-medium text-ink-soft">{TASK_LABEL[task.status]}</span>
+                    <span className="block text-xs font-medium text-ink-soft">
+                      {TASK_LABEL[task.status]}
+                    </span>
                   </span>
                 </li>
               ))}

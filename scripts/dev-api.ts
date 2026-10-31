@@ -17,11 +17,32 @@ type Handler = (
   },
 ) => Promise<void>;
 
+const MAX_DEV_BODY_BYTES = 32_768;
+
+const DEV_SECURITY_HEADERS: Record<string, string> = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Cross-Origin-Opener-Policy': 'same-origin',
+  'Cross-Origin-Resource-Policy': 'same-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
+};
+
+function hasDevProtoPollution(obj: unknown): boolean {
+  if (typeof obj !== 'object' || obj === null) return false;
+  if (Array.isArray(obj)) return obj.some(hasDevProtoPollution);
+  for (const [key, value] of Object.entries(obj)) {
+    if (key === '__proto__' || key === 'constructor' || key === 'prototype') return true;
+    if (hasDevProtoPollution(value)) return true;
+  }
+  return false;
+}
+
 function readBody(req: IncomingMessage): Promise<string> {
   return new Promise((resolve) => {
     let data = '';
     req.on('data', (chunk: Buffer) => {
-      if (data.length < 64 * 1024) data += chunk.toString('utf8');
+      if (data.length <= MAX_DEV_BODY_BYTES + 1024) data += chunk.toString('utf8');
     });
     req.on('end', () => resolve(data));
   });
@@ -38,7 +59,16 @@ async function handleApi(
     next();
     return;
   }
+  for (const [key, value] of Object.entries(DEV_SECURITY_HEADERS)) {
+    res.setHeader(key, value);
+  }
   const raw = await readBody(req);
+  if (Buffer.byteLength(raw) > MAX_DEV_BODY_BYTES) {
+    res.statusCode = 413;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ error: 'PAYLOAD_TOO_LARGE' }));
+    return;
+  }
   let body: unknown = raw;
   if ((req.headers['content-type'] ?? '').startsWith('application/json')) {
     try {
@@ -46,6 +76,12 @@ async function handleApi(
     } catch {
       body = raw;
     }
+  }
+  if (hasDevProtoPollution(body)) {
+    res.statusCode = 400;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ error: 'INVALID_INPUT' }));
+    return;
   }
   const reply = (status: number, payload: unknown) => {
     res.statusCode = status;

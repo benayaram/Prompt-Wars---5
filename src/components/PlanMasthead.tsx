@@ -54,7 +54,9 @@ export function PlanMasthead({ plan, today }: { plan: Plan; today: string }) {
             <Icon name="users" className="h-4 w-4" />
           </div>
           <div className="min-w-0">
-            <p className="text-[11px] font-medium uppercase tracking-wider text-ink-soft">Guest Count</p>
+            <p className="text-[11px] font-medium uppercase tracking-wider text-ink-soft">
+              Guest Count
+            </p>
             <p className="font-semibold text-ink">{plan.guests} guests</p>
           </div>
         </li>
@@ -64,7 +66,9 @@ export function PlanMasthead({ plan, today }: { plan: Plan; today: string }) {
             <Icon name="wallet" className="h-4 w-4" />
           </div>
           <div className="min-w-0">
-            <p className="text-[11px] font-medium uppercase tracking-wider text-ink-soft">Target Budget</p>
+            <p className="text-[11px] font-medium uppercase tracking-wider text-ink-soft">
+              Target Budget
+            </p>
             <p className="font-semibold text-ink">{toLakh(plan.totalBudget)} budget</p>
           </div>
         </li>
@@ -74,7 +78,9 @@ export function PlanMasthead({ plan, today }: { plan: Plan; today: string }) {
             <Icon name="calendar" className="h-4 w-4" />
           </div>
           <div className="min-w-0">
-            <p className="text-[11px] font-medium uppercase tracking-wider text-ink-soft">Countdown</p>
+            <p className="text-[11px] font-medium uppercase tracking-wider text-ink-soft">
+              Countdown
+            </p>
             <p className="font-semibold text-ink">{countdown(days)}</p>
           </div>
         </li>

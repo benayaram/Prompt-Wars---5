@@ -16,6 +16,7 @@ import { planFromHash } from './share';
 import { parsePlan } from './validate';
 
 export const STORAGE_KEY = 'utsaviq.plan.v1';
+export const MAX_DELAY_DAYS = 365;
 
 export interface ToastData {
   key: number;
@@ -114,7 +115,7 @@ export function reducer(state: StoreState, action: Action): StoreState {
               ? {
                   ...t,
                   status: 'delayed' as const,
-                  delayDays: Math.min(365, Math.floor(action.days)),
+                  delayDays: Math.min(MAX_DELAY_DAYS, Math.floor(action.days)),
                 }
               : { ...t, status: 'todo' as const, delayDays: undefined }
             : t,

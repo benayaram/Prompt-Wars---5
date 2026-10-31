@@ -174,11 +174,16 @@ export interface Phase {
   order: number;
 }
 
+export const PHASE_4_MONTHS_DAYS = 120;
+export const PHASE_2_MONTHS_DAYS = 60;
+export const PHASE_1_MONTH_DAYS = 30;
+export const PHASE_FINAL_MONTH_DAYS = 8;
+
 const PHASES: { min: number; phase: Phase }[] = [
-  { min: 120, phase: { key: 'p1', label: '4+ months out', order: 1 } },
-  { min: 60, phase: { key: 'p2', label: '2 to 4 months out', order: 2 } },
-  { min: 30, phase: { key: 'p3', label: '1 to 2 months out', order: 3 } },
-  { min: 8, phase: { key: 'p4', label: 'Final month', order: 4 } },
+  { min: PHASE_4_MONTHS_DAYS, phase: { key: 'p1', label: '4+ months out', order: 1 } },
+  { min: PHASE_2_MONTHS_DAYS, phase: { key: 'p2', label: '2 to 4 months out', order: 2 } },
+  { min: PHASE_1_MONTH_DAYS, phase: { key: 'p3', label: '1 to 2 months out', order: 3 } },
+  { min: PHASE_FINAL_MONTH_DAYS, phase: { key: 'p4', label: 'Final month', order: 4 } },
 ];
 const FINAL_WEEK: Phase = { key: 'p5', label: 'Final week', order: 5 };
 

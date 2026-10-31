@@ -60,7 +60,11 @@ export function TaskRow({
               : 'border-line text-ink-soft'
         }`}
       >
-        {done ? <Icon name="check" className="h-3.5 w-3.5" /> : <span className="h-1.5 w-1.5 rounded-full bg-current" />}
+        {done ? (
+          <Icon name="check" className="h-3.5 w-3.5" />
+        ) : (
+          <span className="h-1.5 w-1.5 rounded-full bg-current" />
+        )}
       </span>
 
       <div
@@ -72,13 +76,21 @@ export function TaskRow({
       >
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <h4 className={`text-base font-bold ${done ? 'text-ink-soft line-through' : 'text-ink'}`}>
+            <h4
+              className={`text-base font-bold ${done ? 'text-ink-soft line-through' : 'text-ink'}`}
+            >
               {task.title}
             </h4>
             <p className="tabular mt-0.5 text-xs font-medium text-ink-soft sm:text-sm">
-              <span className="font-semibold text-ink">{categoryLabel(occasion, task.category)}</span> · Due {formatDate(task.dueDate)}
+              <span className="font-semibold text-ink">
+                {categoryLabel(occasion, task.category)}
+              </span>{' '}
+              · Due {formatDate(task.dueDate)}
               {shifted && !done && (
-                <span className="font-semibold text-warn"> · Now expected {formatDate(task.effectiveDate)}</span>
+                <span className="font-semibold text-warn">
+                  {' '}
+                  · Now expected {formatDate(task.effectiveDate)}
+                </span>
               )}
             </p>
           </div>

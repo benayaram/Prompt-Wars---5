@@ -79,7 +79,10 @@ export default function IdeasPanel({ plan }: { plan: Plan }) {
               <h3 className="font-display text-base font-bold text-ink">Celebration Themes</h3>
               <ul className="mt-3 grid gap-3 md:grid-cols-2">
                 {data.themes.map((t) => (
-                  <li key={t.title} className="rounded-2xl border border-line bg-card p-4 shadow-xs">
+                  <li
+                    key={t.title}
+                    className="rounded-2xl border border-line bg-card p-4 shadow-xs"
+                  >
                     <p className="font-bold text-ink">{t.title}</p>
                     <p className="mt-1 text-xs text-ink-soft sm:text-sm">{t.description}</p>
                   </li>

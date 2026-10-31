@@ -105,7 +105,8 @@ export function EmptyState({
         {title}
       </p>
       <p className="mt-2 max-w-sm text-sm text-ink-soft">
-        Configure your event essentials to unlock dynamic budgeting, intelligent timelines, and vendor comparisons.
+        Configure your event essentials to unlock dynamic budgeting, intelligent timelines, and
+        vendor comparisons.
       </p>
       <button type="button" className="btn-primary mt-6" onClick={onAction}>
         {action}

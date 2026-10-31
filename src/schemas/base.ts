@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+/** The 7 core celebration budget categories supported across all occasions. */
 export const CATEGORIES = [
   'venue',
   'catering',
@@ -9,15 +10,21 @@ export const CATEGORIES = [
   'misc',
   'contingency',
 ] as const;
+
+/** Zod validator and TypeScript type for celebration budget categories. */
 export const CategorySchema = z.enum(CATEGORIES);
 export type Category = z.infer<typeof CategorySchema>;
 
+/** Supported occasion types: wedding, kids_birthday, milestone, and community celebrations. */
 export const OCCASIONS = ['wedding', 'kids_birthday', 'milestone', 'community'] as const;
 export const OccasionSchema = z.enum(OCCASIONS);
 export type Occasion = z.infer<typeof OccasionSchema>;
 
+/** Maximum allowable guest count (100,000). */
 export const MAX_GUESTS = 100_000;
+/** Maximum allowable budget in INR (₹10,000 crore). */
 export const MAX_BUDGET = 100_000_000_000;
+/** Maximum number of comparative vendor quotes retained per category. */
 export const MAX_QUOTES_PER_CATEGORY = 3;
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Use YYYY-MM-DD');

@@ -39,7 +39,10 @@ export function DescribeEvent({ onParsed }: { onParsed: (result: IntakeParse) =>
   return (
     <section className="card shadow-card lg:sticky lg:top-20" aria-labelledby="describe-h">
       <div className="flex items-center justify-between border-b border-line pb-3">
-        <h2 id="describe-h" className="flex items-center gap-2 font-display text-lg font-bold text-ink">
+        <h2
+          id="describe-h"
+          className="flex items-center gap-2 font-display text-lg font-bold text-ink"
+        >
           <Icon name="sparkle" className="h-4 w-4 text-accent" />
           Describe your event
         </h2>
@@ -65,7 +68,11 @@ export function DescribeEvent({ onParsed }: { onParsed: (result: IntakeParse) =>
       </div>
       {description === '' && (
         <p id="describe-tab-hint" className="hint flex items-center gap-1.5 text-xs">
-          Press <kbd className="rounded border border-line bg-paper px-1.5 py-0.5 font-mono text-xs font-semibold text-ink shadow-2xs">Tab</kbd> to use this example.
+          Press{' '}
+          <kbd className="rounded border border-line bg-paper px-1.5 py-0.5 font-mono text-xs font-semibold text-ink shadow-2xs">
+            Tab
+          </kbd>{' '}
+          to use this example.
         </p>
       )}
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">

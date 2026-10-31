@@ -1,5 +1,10 @@
 const inr = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
 
+export const CRORE_MULTIPLIER = 10_000_000;
+export const LAKH_MULTIPLIER = 100_000;
+export const THOUSAND_MULTIPLIER = 1_000;
+export const MAX_PARSED_INR = 100_000_000_000;
+
 /** ₹8,00,000 (en-IN grouping). Negative values render as −₹x. */
 export function formatINR(amount: number): string {
   const n = Math.round(amount);
@@ -20,8 +25,8 @@ export function toLakh(amount: number): string {
   const n = Math.round(amount);
   const abs = Math.abs(n);
   const sign = n < 0 ? '−' : '';
-  if (abs >= 10_000_000) return `${sign}₹${trim(abs / 10_000_000)} crore`;
-  if (abs >= 100_000) return `${sign}₹${trim(abs / 100_000)} lakh`;
+  if (abs >= CRORE_MULTIPLIER) return `${sign}₹${trim(abs / CRORE_MULTIPLIER)} crore`;
+  if (abs >= LAKH_MULTIPLIER) return `${sign}₹${trim(abs / LAKH_MULTIPLIER)} lakh`;
   return formatINR(n);
 }
 
@@ -73,16 +78,16 @@ export function largestRemainderRound(weights: readonly number[], total: number)
 
 const UNIT: Record<string, number> = {
   '': 1,
-  l: 100_000,
-  lac: 100_000,
-  lacs: 100_000,
-  lakh: 100_000,
-  lakhs: 100_000,
-  cr: 10_000_000,
-  crore: 10_000_000,
-  crores: 10_000_000,
-  k: 1_000,
-  thousand: 1_000,
+  l: LAKH_MULTIPLIER,
+  lac: LAKH_MULTIPLIER,
+  lacs: LAKH_MULTIPLIER,
+  lakh: LAKH_MULTIPLIER,
+  lakhs: LAKH_MULTIPLIER,
+  cr: CRORE_MULTIPLIER,
+  crore: CRORE_MULTIPLIER,
+  crores: CRORE_MULTIPLIER,
+  k: THOUSAND_MULTIPLIER,
+  thousand: THOUSAND_MULTIPLIER,
 };
 
 /**
@@ -102,6 +107,6 @@ export function parseINR(input: string): number | null {
   );
   if (!match) return null;
   const value = Number(match[1]) * (UNIT[match[2] ?? ''] ?? 1);
-  if (!Number.isFinite(value) || value <= 0 || value > 100_000_000_000) return null;
+  if (!Number.isFinite(value) || value <= 0 || value > MAX_PARSED_INR) return null;
   return Math.round(value);
 }

@@ -4,6 +4,10 @@ import { parsePlan } from './validate';
 export const SHARE_PREFIX = '#plan=';
 /** Hard cap on the encoded payload so a crafted link cannot make us decode megabytes. */
 export const MAX_SHARE_CHARS = 32_000;
+/** Maximum URL share hash payload length (8 KB). */
+export const MAX_COMPRESSED_LENGTH = 8_192;
+/** Maximum decompressed byte budget for decoded share payloads (64 KB). */
+export const MAX_DECOMPRESSED_BYTES = 65_536;
 
 function toBase64Url(text: string): string {
   const bytes = new TextEncoder().encode(text);

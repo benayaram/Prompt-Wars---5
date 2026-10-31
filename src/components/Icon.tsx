@@ -151,8 +151,15 @@ export function BrandMark({ className = 'h-9 w-9' }: { className?: string }) {
       </defs>
       <rect width="36" height="36" rx="10" fill="url(#utsav-grad-bg)" />
       {/* Faceted celebration star / prism */}
-      <path d="M18 6L21.5 14.5L30 18L21.5 21.5L18 30L14.5 21.5L6 18L14.5 14.5Z" fill="url(#utsav-grad-accent)" opacity="0.9" />
-      <path d="M18 10L20.5 16L26 18L20.5 20L18 26L15.5 20L10 18L15.5 16Z" fill="url(#utsav-grad-gold)" />
+      <path
+        d="M18 6L21.5 14.5L30 18L21.5 21.5L18 30L14.5 21.5L6 18L14.5 14.5Z"
+        fill="url(#utsav-grad-accent)"
+        opacity="0.9"
+      />
+      <path
+        d="M18 10L20.5 16L26 18L20.5 20L18 26L15.5 20L10 18L15.5 16Z"
+        fill="url(#utsav-grad-gold)"
+      />
       <circle cx="18" cy="18" r="2.5" fill="#FFFFFF" />
     </svg>
   );

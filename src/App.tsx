@@ -10,7 +10,7 @@ import {
 import { AssistantPanel } from './components/AssistantPanel';
 import { BudgetTab } from './components/BudgetTab';
 import { Header } from './components/Header';
-import { Icon, type IconName } from './components/Icon';
+import { NoticeBanner, TabNav, TABS, type TabId } from './components/AppNav';
 import { PlanMasthead } from './components/PlanMasthead';
 import { PlanSetup } from './components/PlanSetup';
 import { ProgressPanel } from './components/ProgressPanel';
@@ -26,19 +26,17 @@ import { loadInitial, safeStorage, usePlanStore, type InitialLoad } from './stat
 const VendorsTab = lazy(() => import('./components/VendorsTab'));
 const IdeasPanel = lazy(() => import('./components/IdeasPanel'));
 
-const TABS = [
-  { id: 'setup', label: 'Plan setup', icon: 'pencil' },
-  { id: 'budget', label: 'Budget', icon: 'wallet' },
-  { id: 'timeline', label: 'Timeline', icon: 'route' },
-  { id: 'vendors', label: 'Vendors', icon: 'store' },
-] as const satisfies readonly { id: string; label: string; icon: IconName }[];
-type TabId = (typeof TABS)[number]['id'];
-
 function readInitial(): InitialLoad {
   return loadInitial(window.location.hash, safeStorage());
 }
 
-export default function App({ initial, today: todayProp }: { initial?: InitialLoad; today?: string }) {
+export default function App({
+  initial,
+  today: todayProp,
+}: {
+  initial?: InitialLoad;
+  today?: string;
+}) {
   const [boot] = useState<InitialLoad>(() => initial ?? readInitial());
   const [today] = useState(() => todayProp ?? todayISO());
   const { state, dispatch } = usePlanStore(boot);
@@ -118,52 +116,11 @@ export default function App({ initial, today: todayProp }: { initial?: InitialLo
           }
         }}
       >
-        {notice && (
-          <div
-            role="status"
-            className={`mb-6 flex items-start justify-between gap-3 rounded-2xl border p-4 text-sm shadow-sm ${
-              notice.kind === 'bad_link' ? 'border-warn/40 bg-warn-soft text-warn' : 'border-line bg-accent-soft text-ink'
-            }`}
-          >
-            <p className="flex items-center font-medium">
-              {notice.kind === 'bad_link' && <Icon name="alert" className="mr-2 inline h-4 w-4 shrink-0" />}
-              {notice.message}
-            </p>
-            <button type="button" className="btn-quiet shrink-0 !min-h-8 !px-2.5 !py-1 text-xs" onClick={() => setNotice(null)}>
-              Dismiss
-            </button>
-          </div>
-        )}
+        {notice && <NoticeBanner notice={notice} onDismiss={() => setNotice(null)} />}
 
         {plan && <PlanMasthead plan={plan} today={today} />}
 
-        <div role="tablist" aria-label="Plan sections" className="mb-6 flex rounded-2xl border border-line bg-card p-1.5 shadow-soft">
-          {TABS.map((t) => {
-            const active = tab === t.id;
-            return (
-              <button
-                key={t.id}
-                ref={(el) => {
-                  refs.current[t.id] = el;
-                }}
-                role="tab"
-                type="button"
-                id={`tab-${t.id}`}
-                aria-selected={active}
-                aria-controls={`panel-${t.id}`}
-                tabIndex={active ? 0 : -1}
-                className={`flex min-h-12 min-w-0 flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold tracking-wide transition-all duration-200 sm:text-sm ${
-                  active ? 'bg-accent text-on-accent shadow-sm' : 'text-ink-soft hover:bg-paper hover:text-ink'
-                }`}
-                onClick={() => setTab(t.id)}
-                onKeyDown={onKeyDown}
-              >
-                <Icon name={t.icon} className={`h-4 w-4 ${active ? 'text-on-accent' : 'text-ink-soft'}`} />
-                <span className="truncate">{t.label}</span>
-              </button>
-            );
-          })}
-        </div>
+        <TabNav tab={tab} onSelect={setTab} onKeyDown={onKeyDown} tabRefs={refs} />
 
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
           <div
@@ -187,19 +144,35 @@ export default function App({ initial, today: todayProp }: { initial?: InitialLo
                   }}
                 />
                 {plan && (
-                  <Suspense fallback={<p role="status" className="text-sm text-ink-soft">Loading ideas…</p>}>
+                  <Suspense
+                    fallback={
+                      <p role="status" className="text-sm text-ink-soft">
+                        Loading ideas…
+                      </p>
+                    }
+                  >
                     <IdeasPanel plan={plan} />
                   </Suspense>
                 )}
               </div>
             )}
             {tab === 'budget' && (plan ? <BudgetTab plan={plan} dispatch={dispatch} /> : needPlan)}
-            {tab === 'timeline' && (plan ? <TimelineTab plan={plan} today={today} dispatch={dispatch} /> : needPlan)}
-            {tab === 'vendors' && (plan ? (
-              <Suspense fallback={<p role="status" className="text-sm text-ink-soft">Loading vendors…</p>}>
-                <VendorsTab plan={plan} dispatch={dispatch} />
-              </Suspense>
-            ) : needPlan)}
+            {tab === 'timeline' &&
+              (plan ? <TimelineTab plan={plan} today={today} dispatch={dispatch} /> : needPlan)}
+            {tab === 'vendors' &&
+              (plan ? (
+                <Suspense
+                  fallback={
+                    <p role="status" className="text-sm text-ink-soft">
+                      Loading vendors…
+                    </p>
+                  }
+                >
+                  <VendorsTab plan={plan} dispatch={dispatch} />
+                </Suspense>
+              ) : (
+                needPlan
+              ))}
           </div>
 
           {plan && (
@@ -210,8 +183,12 @@ export default function App({ initial, today: todayProp }: { initial?: InitialLo
         </div>
 
         <footer className="mt-16 border-t border-line/60 pt-8 text-center text-xs text-ink-soft">
-          <p className="font-semibold text-ink">{BRANDING.PRODUCT_NAME} · {BRANDING.SUBTITLE}</p>
-          <p className="mt-1">{BRANDING.COPYRIGHT} Designed for effortless Indian family celebrations.</p>
+          <p className="font-semibold text-ink">
+            {BRANDING.PRODUCT_NAME} · {BRANDING.SUBTITLE}
+          </p>
+          <p className="mt-1">
+            {BRANDING.COPYRIGHT} Designed for effortless Indian family celebrations.
+          </p>
         </footer>
       </main>
 

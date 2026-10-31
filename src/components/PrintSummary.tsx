@@ -135,7 +135,8 @@ export const PrintSummary = memo(function PrintSummary({
         ))}
       </ul>
       <p className="mt-5 border-t border-line pt-3 text-xs text-ink-soft">
-        Amounts are estimates unless marked as a verified quotation. Planned with {BRANDING.PRODUCT_NAME}.
+        Amounts are estimates unless marked as a verified quotation. Planned with{' '}
+        {BRANDING.PRODUCT_NAME}.
       </p>
     </article>
   );

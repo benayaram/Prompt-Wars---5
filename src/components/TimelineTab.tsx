@@ -98,7 +98,9 @@ export function TimelineTab({
                   ? ' · today'
                   : ' · this date has passed'}
             </p>
-            <p className="hint">Delay a task and all downstream dependencies shift automatically.</p>
+            <p className="hint">
+              Delay a task and all downstream dependencies shift automatically.
+            </p>
           </div>
           <div
             role="status"
@@ -155,7 +157,10 @@ export function TimelineTab({
         <section key={g.order} aria-labelledby={`phase-${g.order}`} className="space-y-4">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-accent" />
-            <h3 id={`phase-${g.order}`} className="font-display text-lg font-bold tracking-tight text-ink">
+            <h3
+              id={`phase-${g.order}`}
+              className="font-display text-lg font-bold tracking-tight text-ink"
+            >
               {g.label}
             </h3>
           </div>
