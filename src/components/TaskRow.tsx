@@ -9,7 +9,7 @@ export interface TaskRowProps {
   task: ScheduledTask;
   occasion: Occasion;
   titles: Record<string, string>;
-  pushedBy: string | null;
+  pushedBy?: string | null;
   onStatus: (id: string, status: 'todo' | 'done') => void;
   onDelay: (id: string, days: number) => void;
   onAssignee: (id: string, assignee: string) => void;

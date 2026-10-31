@@ -230,9 +230,21 @@ describe('library fallbacks', () => {
 
   it('useAiCall ignores stale answers, cancellations and reports unknown errors', async () => {
     let releaseFirst: (value: string) => void = noop;
+    let staleOnEvent: ((event: { type: 'thought'; text: string }) => void) | undefined;
     const fn = vi
-      .fn<(options: { signal?: AbortSignal }, label: string) => Promise<string>>()
-      .mockImplementationOnce(() => new Promise((resolve) => (releaseFirst = resolve)))
+      .fn<
+        (
+          options: {
+            signal?: AbortSignal;
+            onEvent?: (event: { type: 'thought'; text: string }) => void;
+          },
+          label: string,
+        ) => Promise<string>
+      >()
+      .mockImplementationOnce((options) => {
+        staleOnEvent = options.onEvent;
+        return new Promise((resolve) => (releaseFirst = resolve));
+      })
       .mockResolvedValueOnce('second')
       .mockRejectedValueOnce(new Error('boom'))
       .mockImplementationOnce(
@@ -249,6 +261,7 @@ describe('library fallbacks', () => {
     await act(async () => {
       await result.current.run('second');
     });
+    staleOnEvent?.({ type: 'thought', text: 'stale thought' });
     await act(async () => {
       releaseFirst('first');
       await first;

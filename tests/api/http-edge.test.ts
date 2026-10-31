@@ -112,4 +112,17 @@ describe('body size guard', () => {
     expect(out.headers['Cross-Origin-Resource-Policy']).toBe('same-origin');
     expect(out.headers['Referrer-Policy']).toBe('strict-origin-when-cross-origin');
   });
+
+  it('accepts array headers and handles empty array headers gracefully', async () => {
+    const { res: r1, out: o1 } = mockRes();
+    await parseIntake(
+      mockReq({ headers: { 'content-type': ['application/json'] }, body: { text: 'a' } }),
+      r1,
+    );
+    expect([200, 502, 503]).toContain(o1.status);
+
+    const { res: r2, out: o2 } = mockRes();
+    await parseIntake(mockReq({ headers: { 'content-type': [] } }), r2);
+    expect(o2.status).toBe(415);
+  });
 });

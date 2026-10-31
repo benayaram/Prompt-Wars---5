@@ -206,6 +206,7 @@ describe('progress panel', () => {
     expect(screen.getByRole('tab', { name: 'Vendors' })).toHaveAttribute('aria-selected', 'true');
 
     await user.click(toggle);
+    await user.keyboard('a');
     await user.keyboard('{Escape}');
     expect(screen.queryByRole('complementary', { name: 'Plan progress' })).not.toBeInTheDocument();
   });

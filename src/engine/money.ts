@@ -102,11 +102,12 @@ export function parseINR(input: string): number | null {
     .replace(/,/g, '')
     .replace(/\s+/g, '')
     .replace(/\/-$/, '');
-  const match = /^(\d+(?:\.\d+)?|\.\d+)(l|lac|lacs|lakh|lakhs|cr|crore|crores|k|thousand)?$/.exec(
-    text,
-  );
+  const match = /^(\d+(?:\.\d+)?|\.\d+)([a-z]+)?$/.exec(text);
   if (!match) return null;
-  const value = Number(match[1]) * (UNIT[match[2] ?? ''] ?? 1);
+  const unit = match[2] ?? '';
+  const multiplier = UNIT[unit];
+  if (multiplier === undefined) return null;
+  const value = Number(match[1]) * multiplier;
   if (!Number.isFinite(value) || value <= 0 || value > MAX_PARSED_INR) return null;
   return Math.round(value);
 }
