@@ -1,4 +1,4 @@
-import type { KeyboardEvent, RefObject } from 'react';
+import type { KeyboardEvent } from 'react';
 import type { InitialLoad } from '../state/planStore';
 import { Icon, type IconName } from './Icon';
 
@@ -48,7 +48,7 @@ export interface TabNavProps {
   tab: TabId;
   onSelect: (id: TabId) => void;
   onKeyDown: (event: KeyboardEvent<HTMLElement>) => void;
-  tabRefs: RefObject<Record<string, HTMLButtonElement | null>>;
+  tabRefs: { current: Record<string, HTMLButtonElement | null> };
 }
 
 /** Accessible tablist navigation between the main application sections. */
@@ -65,9 +65,7 @@ export function TabNav({ tab, onSelect, onKeyDown, tabRefs }: TabNavProps) {
           <button
             key={t.id}
             ref={(el) => {
-              if (tabRefs.current) {
-                tabRefs.current[t.id] = el;
-              }
+              tabRefs.current[t.id] = el;
             }}
             role="tab"
             type="button"

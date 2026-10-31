@@ -109,7 +109,8 @@ async function readStream(
     const { done, value } = await reader.read();
     buffer += decoder.decode(value, { stream: !done });
     const lines = buffer.split('\n');
-    buffer = done ? '' : (lines.pop() ?? '');
+    const trailing = lines.pop();
+    buffer = !done && trailing ? trailing : '';
     for (const line of lines) {
       const result = handle(line);
       if (result) return result.data;

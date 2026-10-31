@@ -30,6 +30,7 @@ describe('parseINR', () => {
     '1e9',
     '8..5',
     '₹',
+    '8 bananas',
     '999999999999999999',
   ])('rejects %j', (input) => {
     expect(parseINR(input)).toBeNull();

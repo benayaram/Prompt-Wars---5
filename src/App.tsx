@@ -68,18 +68,20 @@ export default function App({
 
   function onKeyDown(event: KeyboardEvent<HTMLElement>) {
     const index = TABS.findIndex((t) => t.id === tab);
-    let next = index;
-    if (event.key === 'ArrowRight') next = (index + 1) % TABS.length;
-    else if (event.key === 'ArrowLeft') next = (index - 1 + TABS.length) % TABS.length;
-    else if (event.key === 'Home') next = 0;
-    else if (event.key === 'End') next = TABS.length - 1;
-    else return;
+    const nextTab =
+      event.key === 'ArrowRight'
+        ? TABS[(index + 1) % TABS.length]
+        : event.key === 'ArrowLeft'
+          ? TABS[(index - 1 + TABS.length) % TABS.length]
+          : event.key === 'Home'
+            ? TABS[0]
+            : event.key === 'End'
+              ? TABS[TABS.length - 1]
+              : null;
+    if (!nextTab) return;
     event.preventDefault();
-    const target = TABS[next];
-    if (target) {
-      setTab(target.id);
-      refs.current[target.id]?.focus();
-    }
+    setTab(nextTab.id);
+    refs.current[nextTab.id]?.focus();
   }
 
   const needPlan = (

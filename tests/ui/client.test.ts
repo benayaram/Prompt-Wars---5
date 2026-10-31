@@ -59,6 +59,11 @@ describe('api client', () => {
     ).rejects.toMatchObject({ kind: 'ai_invalid' });
     await expect(
       parseIntake('x', {
+        fetcher: vi.fn().mockResolvedValue(new Response(null, { status: 500 })),
+      }),
+    ).rejects.toMatchObject({ kind: 'server' });
+    await expect(
+      parseIntake('x', {
         fetcher: vi.fn().mockResolvedValue(new Response('<html>', { status: 500 })),
       }),
     ).rejects.toMatchObject({ kind: 'server' });

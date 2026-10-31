@@ -35,7 +35,7 @@ export function TimelineTab({
     } catch (error) {
       return {
         schedule: EMPTY,
-        error: error instanceof ScheduleError ? error.message : 'The timeline could not be built.',
+        error: (error as ScheduleError).message,
       };
     }
   }, [plan.tasks, plan.eventDate, today]);
@@ -173,7 +173,7 @@ export function TimelineTab({
                   task={task}
                   occasion={plan.occasion}
                   titles={titles}
-                  pushedBy={cause ? (titles[cause] ?? null) : null}
+                  pushedBy={cause ? titles[cause] : null}
                   onStatus={(id, status) => dispatch({ type: 'setTaskStatus', id, status })}
                   onDelay={(id, days) => dispatch({ type: 'setDelay', id, days })}
                   onAssignee={(id, assignee) => dispatch({ type: 'setAssignee', id, assignee })}
